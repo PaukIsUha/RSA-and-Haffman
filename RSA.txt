@@ -1,0 +1,48 @@
+#include <iostream>
+using namespace std;
+
+long long int modpow(long long int x, long long int e, long long int N) 
+{
+	long long int res = 1;
+	x = x % N;
+	while (e > 0)
+	{
+		if (e & 1)
+			res = (res * x) % N;
+		e = e >> 1; 
+		x = (x * x) % N; 
+	}
+	return res;
+}
+
+int main() 
+{
+	long long int p1 = 29879, p2 = 29983, Fi, d, e = 0, N, res;
+	N = p1 * p2;
+	Fi = (p1 - 1) * (p2 - 1);
+	for(int i = 3; i < Fi; ++i)
+		if (Fi % i != 0) 
+		{
+			e = i;
+			break;
+		}
+	d = 0;
+	do 
+	{
+		++d;
+		res = (d * e) % Fi;
+	} while (res != 1);
+	long long int m;
+	cout << e << " " << N << " - public key\n";
+	cout << d << " " << N << " - privat key\n";
+	cout << "Your info: ";
+	cin >> m;
+	m = modpow(m, e, N);
+
+	// зашифровал
+	cout << m << endl;
+
+	// расшифровываем
+	cout << modpow(m, d, N);
+	return 0;
+}
